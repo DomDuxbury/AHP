@@ -1,6 +1,7 @@
 from __future__ import division
 import numpy as np
 import sys
+import config
 from normalise import Normaliser
 from compare import ExpComparer, SimpleComparer
 
@@ -57,53 +58,38 @@ def calc_all_weights(attribs, journeys):
         weight_vector = calc_weight_vector(matrix)
         global_weights[attrib] = weight_vector * attribs[attrib]['weight']
 
+    global_weights['total'] = (global_weights['price']
+                               + global_weights['time']
+                               + global_weights['reliability'])
+
     return global_weights
 
 
+def report(result, journeys):
+    rank = list(enumerate(result['total']))
+    rank = sorted(rank, key=lambda x: x[1], reverse=True)
+    for journeyId, score in rank:
+        journey = journeys[journeyId]
+        print('Journey {}:\ntime:\t\t{}\nprice:\t\t{}\nreliability:\t{}\n'
+              .format(journeyId + 1, journey['price'],
+                      journey['time'], journey['reliability']))
+        print('Overall: \t{}'.format(score))
+        print('Time:\t\t{}').format(result['time'][journeyId])
+        print('Price:\t\t{}').format(result['price'][journeyId])
+        print('Reliability:\t{}\n\n').format(result['reliability'][journeyId])
+
+
 def main():
-    journeys = [
-        {
-            'time': 54,
-            'price': 53,
-            'reliability': 95
-        },
-        {
-            'time': 100,
-            'price': 32,
-            'reliability': 96
-        },
-        {
-            'time': 60,
-            'price': 70,
-            'reliability': 99
-        }
-    ]
+    time_weight, price_weight, reliability_weight = (float(sys.argv[1]),
+                                                     float(sys.argv[2]),
+                                                     float(sys.argv[3]))
+    attrib_dict = config.get_attrib_dict(time_weight,
+                                         price_weight,
+                                         reliability_weight)
+    journeys = config.get_journeys()
 
-    attrib_dict = {
-        'time': {
-            'bigger_is_better': False,
-            'weight': float(sys.argv[1])
-        },
-        'price': {
-            'bigger_is_better': False,
-            'weight': float(sys.argv[2])
-        },
-        'reliability': {
-            'bigger_is_better': True,
-            'weight': float(sys.argv[3]),
-            'minX': 90,
-            'maxX': 100
-        }
-    }
-
-    global_weights = calc_all_weights(attrib_dict, journeys)
-
-    total = (global_weights['price']
-             + global_weights['time']
-             + global_weights['reliability'])
-
-    print(global_weights)
-    print(total)
+    result = calc_all_weights(attrib_dict, journeys)
+    report(result, journeys)
 
 
 if __name__ == '__main__':
