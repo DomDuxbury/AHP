@@ -8,7 +8,6 @@ from compare import ExpComparer, SimpleComparer
 
 def calc_matrix(values, norm, comparer):
 
-
     matrix_shape = (len(values), len(values))
     matrix = np.ones(matrix_shape)
 
@@ -24,9 +23,8 @@ def calc_matrix(values, norm, comparer):
 
 
 def calc_weight_vector(matrix):
-        normal_weights = matrix / matrix.sum(axis=0)
-        weight_vector = normal_weights.mean(axis=1)
-        return weight_vector
+        normal = matrix / matrix.sum(axis=0)
+        return normal.mean(axis=1)
 
 
 def getMinMax(attribs, attrib, values):
@@ -85,7 +83,7 @@ def main():
     attrib_dict = config.get_attrib_dict(time_weight,
                                          price_weight,
                                          reliability_weight)
-    journeys = config.get_journeys()
+    journeys = config.get_journeys(5)
 
     result = calc_all_weights(attrib_dict, journeys)
     report(result, journeys)
