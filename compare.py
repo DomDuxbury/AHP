@@ -9,7 +9,7 @@ class BaseComparer():
         if self.bigger_is_better:
             return self.equation(x, y)
         else:
-            return self.equation(y, x)
+            return 1 / self.equation(x, y)
 
 
 class SimpleComparer(BaseComparer):

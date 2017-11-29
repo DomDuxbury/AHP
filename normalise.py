@@ -2,7 +2,7 @@ from __future__ import division
 
 
 class Normaliser():
-    def __init__(self, maxX, minX):
+    def __init__(self, minX, maxX):
         self.maxX = maxX
         self.minX = minX
 
