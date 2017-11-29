@@ -14,7 +14,11 @@ class BaseComparer():
 
 class SimpleComparer(BaseComparer):
     def equation(self, x, y):
-        return math.floor((y - x) * 8) + 1
+        val = math.floor(abs((x - y) * 8)) + 1
+        if x - y > 0:
+            return val
+        else:
+            return 1 / val
 
 
 class ExpComparer(BaseComparer):

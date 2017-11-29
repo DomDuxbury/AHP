@@ -46,9 +46,7 @@ def calc_matrix(values, bigger_is_better=True):
     matrix = np.ones(matrix_shape)
 
     for i, row in enumerate(matrix):
-        print(values[i])
         values[i] = norm.normalise(values[i])
-        print(values[i])
 
     for i in range(0, len(matrix)):
         for j in range(i+1, len(matrix)):
@@ -64,7 +62,9 @@ def calc_all_weights(attribs, journeys):
     for attrib in attribs.keys():
         values = map(lambda x: x[attrib], journeys)
         bigger_is_better = attribs[attrib]['bigger_is_better']
+        print(attrib)
         matrix = calc_matrix(values, bigger_is_better=bigger_is_better)
+        print(matrix)
         weight_vector = calc_weight_vector(matrix)
 
         global_weights[attrib] = weight_vector * attribs[attrib]['weight']

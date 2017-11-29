@@ -1,3 +1,6 @@
+from __future__ import division
+
+
 class Normaliser():
     def __init__(self, maxX, minX):
         self.maxX = maxX
