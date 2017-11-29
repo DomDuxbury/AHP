@@ -6,9 +6,8 @@ from normalise import Normaliser
 from compare import ExpComparer, SimpleComparer
 
 
-def calc_matrix(values, norm, bigger_is_better=True):
+def calc_matrix(values, norm, comparer):
 
-    comparer = SimpleComparer(bigger_is_better)
 
     matrix_shape = (len(values), len(values))
     matrix = np.ones(matrix_shape)
@@ -49,12 +48,12 @@ def calc_all_weights(attribs, journeys):
 
     for attrib in attribs.keys():
         values = map(lambda x: x[attrib], journeys)
-        bigger_is_better = attribs[attrib]['bigger_is_better']
-
         minX, maxX = getMinMax(attribs, attrib, values)
-        norm = Normaliser(minX, maxX)
 
-        matrix = calc_matrix(values, norm, bigger_is_better=bigger_is_better)
+        norm = Normaliser(minX, maxX)
+        comparer = ExpComparer(attribs[attrib]['bigger_is_better'])
+
+        matrix = calc_matrix(values, norm, comparer)
         weight_vector = calc_weight_vector(matrix)
         global_weights[attrib] = weight_vector * attribs[attrib]['weight']
 
