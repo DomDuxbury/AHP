@@ -8,7 +8,7 @@ from compare import ExpComparer, SimpleComparer
 
 def calc_matrix(values, norm, bigger_is_better=True):
 
-    comparer = ExpComparer(bigger_is_better)
+    comparer = SimpleComparer(bigger_is_better)
 
     matrix_shape = (len(values), len(values))
     matrix = np.ones(matrix_shape)
@@ -71,8 +71,8 @@ def report(result, journeys):
     for journeyId, score in rank:
         journey = journeys[journeyId]
         print('Journey {}:\ntime:\t\t{}\nprice:\t\t{}\nreliability:\t{}\n'
-              .format(journeyId + 1, journey['price'],
-                      journey['time'], journey['reliability']))
+              .format(journeyId + 1, journey['time'],
+                      journey['price'], journey['reliability']))
         print('Overall: \t{}'.format(score))
         print('Time:\t\t{}').format(result['time'][journeyId])
         print('Price:\t\t{}').format(result['price'][journeyId])
