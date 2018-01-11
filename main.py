@@ -49,7 +49,7 @@ def calc_all_weights(attribs, journeys):
         minX, maxX = getMinMax(attribs, attrib, values)
 
         norm = Normaliser(minX, maxX)
-        comparer = ExpComparer(attribs[attrib]['bigger_is_better'])
+        comparer = SimpleComparer(attribs[attrib]['bigger_is_better'])
 
         matrix = calc_matrix(values, norm, comparer)
         weight_vector = calc_weight_vector(matrix)
@@ -83,7 +83,7 @@ def main():
     attrib_dict = config.get_attrib_dict(time_weight,
                                          price_weight,
                                          reliability_weight)
-    journeys = config.get_journeys(5)
+    journeys = config.get_journeys(3)
 
     result = calc_all_weights(attrib_dict, journeys)
     report(result, journeys)
