@@ -7,4 +7,7 @@ class Normaliser():
         self.minX = minX
 
     def normalise(self, x):
-        return (x - self.minX) / (self.maxX - self.minX)
+        if self.minX == self.maxX:
+            return x
+        else:
+            return (x - self.minX) / (self.maxX - self.minX)

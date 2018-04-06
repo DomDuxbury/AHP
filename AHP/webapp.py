@@ -1,7 +1,8 @@
 #!flask/bin/python
+import numpy as np
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-from main import calc_all_weights
+from main import calc_all_weights, calc_weight_vector
 import config
 
 
@@ -11,7 +12,7 @@ CORS(app)
 
 def validate_request(request):
     valid = 'journeys' in request.json \
-            and 'weights' in request.json
+            and 'comparisons' in request.json
     if not valid:
         abort(400)
 
@@ -22,16 +23,20 @@ def serialize(ranking):
     return ranking
 
 
+def parse_comparisons(comparisons):
+    matrix = np.matrix(comparisons)
+    return calc_weight_vector(matrix)
+
+
 @app.route('/rank', methods=['POST'])
 def create_task():
     validate_request(request)
 
     journeys = request.json['journeys']
-    weights = request.json['weights']
+    comparisons = request.json['comparisons']
 
-    attrib_dict = config.get_attrib_dict(weights['time'],
-                                         weights['price'],
-                                         weights['reliability'])
+    weights = parse_comparisons(comparisons).flatten().tolist()[0]
+    attrib_dict = config.get_attrib_dict(*weights)
     ranking = calc_all_weights(attrib_dict, journeys)
     return jsonify({'ranking': serialize(ranking)}), 201
 
