@@ -30,18 +30,18 @@ def get_journeys(n=3):
 
 def get_attrib_dict(w1, w2, w3):
     return {
-        'time': {
+        'price': {
             'bigger_is_better': False,
             'weight': w1
         },
-        'price': {
+        'time': {
             'bigger_is_better': False,
             'weight': w2
         },
         'reliability': {
             'bigger_is_better': True,
             'weight': w3,
-            'minX': 90,
-            'maxX': 100
+            'minX': 0,
+            'maxX': 1
         }
     }

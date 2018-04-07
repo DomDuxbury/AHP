@@ -44,7 +44,7 @@ def calc_all_weights(attribs, journeys):
     global_weights = {}
 
     for attrib in attribs.keys():
-        values = list(map(lambda x: x[attrib], journeys))
+        values = list(map(lambda x: float(x[attrib]), journeys))
         minX, maxX = getMinMax(attribs, attrib, values)
         norm = Normaliser(minX, maxX)
         comparer = SimpleComparer(attribs[attrib]['bigger_is_better'])
